@@ -24,8 +24,13 @@
    Funcion
    readUltrasonicDistance(int triggerPin, int echoPin): Referencia obtenida de sensor ultrasonico tinkercad.com
 */
-int inches = 0;
-int cm = 0;
+int inches = 0;//declara variables pulgadas
+int cm = 0;// decalara vaiables en centímetos 
+
+/*Se define una función readUltrasonicDistance al inicio 
+para poder llamarla en el loop es del tipo long para 
+aumentar la presición y tener mayor cantidad de decimsles 
+Triger emite frecuencia y eco recibe mismo terminal SIG*/
 
 long readUltrasonicDistance(int triggerPin, int echoPin)
 {
@@ -41,44 +46,48 @@ long readUltrasonicDistance(int triggerPin, int echoPin)
   return pulseIn(echoPin, HIGH);
 }
 
+
+/*FUNCIÓN SETUP QUE SE EJECUTA 1 SOLA VEZ Y CONFIGURA EL SISTEMA */
+
 void setup()
 {
-  Serial.begin(9600);
-  pinMode(8, OUTPUT);
-  pinMode(7, OUTPUT);
-  pinMode(4, OUTPUT);
+  Serial.begin(9600);// comunicación serial 9600 caracteres por segundo
+  pinMode(8, OUTPUT); //salida LED VERDE
+  pinMode(7, OUTPUT); //salida LED AMARILLO
+  pinMode(4, OUTPUT); //salida LED ROJO
 }
 
+/*FUNCIÓN LOOP SE EJECUTA EN FORMA CICLICA */
 void loop()
-{
+{ 
+ //FLOAT VARIABLE NÚMERO ENTERO CON 2 DECIMALES 
   float distancia = 0.01723 * readUltrasonicDistance(2, 2);
-
-  if((distancia < 336) && (distancia >= 200)) {
-    digitalWrite(4, HIGH);
-    digitalWrite(7, LOW);
-    digitalWrite(8, LOW);
+  /*CONDICIONES PARA DIFERENTES DISTANCIAS*/
+  if((distancia < 336) && (distancia >= 200)) 
+  {
+    digitalWrite(4, HIGH); //ENCIENDE LED ROJO
+    digitalWrite(7, LOW); // LED AMARILLO APAGADO
+    digitalWrite(8, LOW); // LED VERDE APAGADO
   } 
   else {
-    digitalWrite(4, LOW); 
+    digitalWrite(4, LOW); //LED ROJO APAGADO
   }
+  /*CONDICION PARA CIERTA DISTANCIA */
   if((distancia < 200) && (distancia >= 100)) {
-    digitalWrite(7, HIGH);
+    digitalWrite(7, HIGH);//LED AMARILLO ENCENDIDO
   } 
   else {
-    digitalWrite(7, LOW); 
+    digitalWrite(7, LOW); //LED AMARILLO APAGADO
   }
+  /*CONDICIÓN PARA CIERTA DISTANCIA*/
   if(distancia < 100) {
-    digitalWrite(8, HIGH);
+    digitalWrite(8, HIGH);//LED VERDE ENCIENDE A UNA DISTANCIA MENOR A 100 cm
   } 
   else {
-    digitalWrite(8, LOW); 
+    digitalWrite(8, LOW); //LED VERDE APAGADO
   }
-  Serial.print("distancia: ");
-  Serial.println(distancia+1.8);
-  
-  
-
-   
+  /*SE COMPARA MONITOR SERIE CON VALOR VISUAL DEL SENSOR SUS RANGO*/
+  Serial.print("distancia: "); //IMPRIMIR EN MONITOR SERIE
+  Serial.println(distancia+1.8); // IMPRIME VALOR DE DISTANCIA 
   delay(10); // Delay a little bit to improve simulation performance
 }
-
